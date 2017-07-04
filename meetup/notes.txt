@@ -1,10 +1,10 @@
 Open two shells in the meetup directory
 
 # Shell 1
-iex --sname main -S mix --cookie meetup
+iex --sname main --cookie meetup -S mix
 
 # Shell 2
-iex --sname other -S mix --cookie meetup
+iex --sname other --cookie meetup -S mix
 Node.connect :"main@zareason-laptop"                       
 
 # Shell 1 -- test code in one VM

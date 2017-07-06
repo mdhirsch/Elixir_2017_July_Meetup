@@ -1,10 +1,14 @@
 Open two shells in the meetup directory
 
-# Shell 1
+# Shell 
+iex -S mix
+iex --sname main -S mix
 iex --sname main --cookie meetup -S mix
 iex --name main@192.168.22.114 --cookie meetup -S mix
+Node.connect :"other@zareason-laptop"                       
 
 # Shell 2
+iex --sname other -S mix
 iex --sname other --cookie meetup -S mix
 iex --name other@192.168.22.117 --cookie meetup -S mix
 Node.connect :"main@zareason-laptop"                       
@@ -13,17 +17,17 @@ Node.connect :"main@192.168.22.114"
 # Shell 1 -- test code in one VM
 even_pid = spawn(Parity, :even_parity, [])
 local_odd_pid = spawn(Parity, :odd_parity, [])
-send even_pid, {self(), even_pid, odd_pid, 0}
+send even_pid, {self(), even_pid, local_odd_pid, 1}
 flush() # to see messages
 
-Parity.compute(even_pid, odd_pid, 0)
+Parity.compute(even_pid, local_odd_pid, 1)
 
 
 # Shell 1 -- tests in both VM's
 odd_pid = Node.spawn_link :"other@zareason-laptop", fn -> Parity.odd_parity end
 vm2_odd_pid = Node.spawn_link :"other@zareason-laptop", Parity, :odd_parity, []
 
-Parity.compute(even_pid, vm2_odd_pid, 0)
+Parity.compute(even_pid, vm2_odd_pid, 1)
 
 remote_odd_pid = Node.spawn_link :"other@192.168.22.117", Parity, :odd_parity, []
 send even_pid, {self(), even_pid, odd_pid, 0}
@@ -33,7 +37,7 @@ Parity.compute(even_pid, remote_odd_pid, 0)
 
 Processes:
 start with: iex -S mix
-Then, if you need more processes:: iex --erl "+P 2000000"  -S mix
+Then, if you need more processes:: iex --erl "+P 1000000"  -S mix
 
 run and time: Processes.time_running(1_000)    
 

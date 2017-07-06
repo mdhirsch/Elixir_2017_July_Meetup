@@ -3,8 +3,7 @@ defmodule Processes do
   
   def count(next_pid) do
     receive do
-      n ->
-      	send next_pid, n+1
+      n -> send next_pid, n+1
     end
   end
   
@@ -22,8 +21,7 @@ defmodule Processes do
     start_pid = create_processes(n, self())
     send start_pid, 0
     receive do
-      n ->
-        IO.puts "count is #{n}"
+      n -> IO.puts "count is #{n}"
     end
   end
   

@@ -1,6 +1,8 @@
 # Meetup
 
-**TODO: Add description**
+These are the modules to be used in my talk to the Elixir meetup in Boulder on July 11, 2017
+
+There are notes on how to run the examples in notes.txt
 
 ## Installation
 

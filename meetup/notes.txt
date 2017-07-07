@@ -29,8 +29,9 @@ vm2_odd_pid = Node.spawn_link :"other@zareason-laptop", Parity, :odd_parity, []
 
 Parity.compute(even_pid, vm2_odd_pid, 1)
 
-remote_odd_pid = Node.spawn_link :"other@192.168.22.117", Parity, :odd_parity, []
+remote_odd_pid = Node.spawn_link :"other@192.168.1.161", Parity, :odd_parity, []
 send even_pid, {self(), even_pid, odd_pid, 0}
+send even_pid, {self(), even_pid, remote_odd_pid, 1}
 flush() # to see messages
 
 Parity.compute(even_pid, remote_odd_pid, 0)

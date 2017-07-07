@@ -7,6 +7,7 @@ defmodule Parity do
       	IO.puts "returning even"
       	send sender, {:even}
       {sender, even_pid, odd_pid, n} ->
+      	IO.puts "even: computing #{n}"
       	send odd_pid, {sender, even_pid, odd_pid, n-1}
     end
     even_parity()
@@ -18,6 +19,7 @@ defmodule Parity do
       	IO.puts "returning odd"
       	send sender, {:odd}
       {sender, even_pid, odd_pid, n} ->
+      	IO.puts "odd: computing #{n}"
       	send even_pid, {sender, even_pid, odd_pid, n-1}
     end
     odd_parity()

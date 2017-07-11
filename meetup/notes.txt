@@ -1,11 +1,46 @@
+
+
+
+Simple processes:
+Open shell
+iex -S mix
+Show hello/0 code
+spawn(Hello, :hello, ["world"])
+Note that it prints, then shows PID
+
+pid = spawn(HelloWithReceive, :hello, [])
+send pid, {self(), "Michael"}  
+Note that it waits, then prints
+
+Finally, to reply:
+pid = spawn(HelloWithReply, :hello, [])
+send pid, {self(), "Michael"}  
+So where is the reply?  Need to see your queue
+flush()
+
+The final trick is to call hello when the process has replied.  (Edit code and reload)
+
+How efficient are processes?
+Lets' use processes to count.
+iex -S mix
+Processes.run(3)
+Processes.time_running(1)
+
+If you ask for too many processes, you can run out of resources.  
+Fortunately, there is a Erlang options for his
+
+iex --erl "+P 2000000" -S mix
+Processes.time_running(100_000)
+
+
 Open two shells in the meetup directory
 
 # Shell 
 iex -S mix
 iex --sname main -S mix
-iex --sname main --cookie meetup -S mix
 iex --name main@192.168.22.114 --cookie meetup -S mix
 Node.connect :"other@zareason-laptop"                       
+Node.connect :"other@192.168.x.x"                       
 
 # Shell 2
 iex --sname other -S mix

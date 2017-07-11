@@ -1,6 +1,5 @@
 
 
-
 Simple processes:
 Open shell
 iex -S mix
@@ -11,6 +10,7 @@ Note that it prints, then shows PID
 pid = spawn(HelloWithReceive, :hello, [])
 send pid, {self(), "Michael"}  
 Note that it waits, then prints
+Process.alive? pid                     
 
 Finally, to reply:
 pid = spawn(HelloWithReply, :hello, [])
@@ -19,6 +19,9 @@ So where is the reply?  Need to see your queue
 flush()
 
 The final trick is to call hello when the process has replied.  (Edit code and reload)
+
+
+
 
 How efficient are processes?
 Lets' use processes to count.
@@ -40,14 +43,7 @@ iex -S mix
 iex --sname main -S mix
 iex --name main@192.168.22.114 --cookie meetup -S mix
 Node.connect :"other@zareason-laptop"                       
-Node.connect :"other@192.168.x.x"                       
-
-# Shell 2
-iex --sname other -S mix
-iex --sname other --cookie meetup -S mix
-iex --name other@192.168.22.117 --cookie meetup -S mix
-Node.connect :"main@zareason-laptop"                       
-Node.connect :"main@192.168.22.114"                       
+Node.connect :"other@192.168.1.xxx"                       
 
 # Shell 1 -- test code in one VM
 even_pid = spawn(Parity, :even_parity, [])
@@ -56,6 +52,13 @@ send even_pid, {self(), even_pid, local_odd_pid, 1}
 flush() # to see messages
 
 Parity.compute(even_pid, local_odd_pid, 1)
+
+# Shell 2
+iex --sname other -S mix
+iex --sname other --cookie meetup -S mix
+iex --name other@192.168.22.117 --cookie meetup -S mix
+Node.connect :"main@zareason-laptop"                       
+Node.connect :"main@192.168.22.114"                       
 
 
 # Shell 1 -- tests in both VM's
